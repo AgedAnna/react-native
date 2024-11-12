@@ -41,6 +41,30 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="scrollView"
+        options={{
+          title: "Scrol lView",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "accessibility" : "accessibility-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="flatListC"
+        options={{
+          title: "FlatList",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "airplane" : "airplane-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
