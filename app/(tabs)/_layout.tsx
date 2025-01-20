@@ -77,6 +77,19 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="sliderCommunity"
+        options={{
+          title: "Slider",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "shield" : "shield-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

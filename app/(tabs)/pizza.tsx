@@ -1,30 +1,91 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Switch,
+  Button,
+  Alert,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import Slider from "@react-native-community/slider";
 
 const Pizza = () => {
-    const [pizza, setPizza] = useState<"1" | "2" | "3" | "4">("1");
-    const pizzaNames: { [key in "1" | "2" | "3" | "4"]: string } = {
-      "1": "Calabresa",
-      "2": "Mussarela",
-      "3": "Brigadeiro",
-      "4": "Frango",
-    };
+  const [nome, setNome] = useState("");
+  const [idade, setIdade] = useState("");
+  const [sexo, setSexo] = useState();
+  const [valor, setValor] = useState(0);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const createdAccount = () => {
+    Alert.alert(
+      "Conta criada",
+      `Nome: ${nome}, Idade: ${idade}, Sexo: ${
+        sexo === 1 ? "Feminino" : "Masculino"
+      }, Limite: ${valor.toFixed(0)}, Estudante: ${isEnabled ? "Sim" : "Nao"}`,
+      [{ text: "OK" }]
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>Menu Pizza</Text>
+      <Text style={styles.title}>Banco Anna</Text>
+
+      <TextInput
+        value={nome}
+        onChangeText={(name) => setNome(name)}
+        style={styles.input}
+        placeholder="Digite seu nome"
+      />
+
+      <TextInput
+        value={idade}
+        onChangeText={(idade) => setIdade(idade)}
+        style={styles.input}
+        placeholder="Digite sua idade"
+        keyboardType="numeric"
+      />
+
       <Picker
-        selectedValue={pizza}
-        onValueChange={(itemValue) => setPizza(itemValue)}
+        selectedValue={sexo}
+        onValueChange={(itemValue) => setSexo(itemValue)}
         style={styles.picker}
       >
-        <Picker.Item label="Calabresa" value="1" key={1} />
-        <Picker.Item label="Mussarela" value="2" key={2} />
-        <Picker.Item label="Brigadeiro" value="3" key={3} />
-        <Picker.Item label="Frango" value="4" key={4} />
+        <Picker.Item label="Feminino" value="1" key={1} />
+        <Picker.Item label="Masculino" value="2" key={2} />
       </Picker>
-      <Text style={styles.pizzas}>Você escolheu: Pizza {pizzaNames[pizza]}</Text>
-      <Text style={styles.pizzas}>R$: 59,99</Text>
+
+      <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+        Seu Limite:
+      </Text>
+      <Slider
+        minimumValue={0}
+        maximumValue={100}
+        onValueChange={(v) => setValor(v)}
+        value={valor}
+        minimumTrackTintColor="#00FF00"
+        maximumTrackTintColor="#FF0000"
+      />
+      <Text style={styles.valor}>Valor selecionado: {valor.toFixed(0)}</Text>
+
+      <View style={styles.switchContainer}>
+        <Text style={styles.switchText}>Estudante: </Text>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+      </View>
+
+      <Button
+        title="Abrir a Conta"
+        disabled={!nome || !idade}
+        onPress={createdAccount}
+      />
     </View>
   );
 };
@@ -35,19 +96,42 @@ const styles = StyleSheet.create({
     marginTop: 28,
     padding: 20,
   },
-  logo: {
+
+  title: {
     textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontWeight: "700",
+    margin: 10,
   },
-  pizzas: {
-    marginTop: 20,
-    fontSize: 18,
-    textAlign: "center",
+
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 20,
   },
+
   picker: {
-    marginHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#00ff00",
+  },
+
+  valor: {
+    fontSize: 12,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center", // Alinha os elementos no centro
+    marginVertical: 10, // Ajusta o espaço vertical entre o Switch e outros componentes
+  },
+
+  switchText: {
+    marginRight: 10, // Espaçamento entre o texto e o Switch
+    fontSize: 16, // Tamanho da fonte do texto
   },
 });
 
